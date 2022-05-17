@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
 require('dotenv').config()
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -23,7 +21,7 @@ app.post('/pitch', async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   const completion = await openai.createCompletion("text-curie-001", {
     prompt: generatePrompt(req.body.user),
-    temperature: 0.99,
+    temperature: 0.7,
     max_tokens: 64,
     top_p: 1,
     frequency_penalty: 0,
@@ -56,34 +54,7 @@ function generatePrompt(p) {
   Answer:`;
 }
 
-app.listen(8080, () => {
+const PORT = process.env.port || 8080;
+app.listen(PORT, () => {
     console.log('listening on port 8080')
 })
-
-
-// Math: 3 + 6
-//     Answer: 9
-//     Math: 1 + 6
-//     Answer: 7
-//     Math: 1+6
-//     Answer: 7
-//     Math: 1+ 6
-//     Answer: 7
-//     Math: 1+ 6
-//     Answer: 7
-//     Math: 1+ 6
-//     Answer: 7
-//     Math: 1 plus 6
-//     Answer: 7
-//     Math: 1 plus 9
-//     Answer: 10
-//     Math: 1 + 6
-//     Answer: 7
-//     Math: 2 + 6
-//     Answer: 8
-//     Math: 3 + 6
-//     Answer: 9
-//     Math: 2 + 2
-//     Answer: 4
-//     Math: ${p}
-//     Answer:`;
