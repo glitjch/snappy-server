@@ -55,7 +55,6 @@ function generatePrompt(p) {
   Answer:`;
 }
 
-const PORT = process.env.port;
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log('listening on port')
 })
