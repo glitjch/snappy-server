@@ -59,7 +59,7 @@ function generatePrompt(p) {
   Answer:`;
 }
 
-const PORT = process.env.port || 80;
+const PORT = process.env.port || 5000;
 app.listen(PORT, () => {
     console.log('listening...')
 })
