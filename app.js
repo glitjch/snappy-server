@@ -54,7 +54,7 @@ function generatePrompt(p) {
   Answer:`;
 }
 
-const PORT = process.env.port || 8080;
+const PORT = process.env.port || 80;
 app.listen(PORT, () => {
-    console.log('listening on port 8080')
+    console.log('listening...')
 })
