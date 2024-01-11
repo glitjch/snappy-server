@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/pitch', async (req, res) => {
+  console.log('server app.post');
   res.set('Access-Control-Allow-Origin', '*');
   const completion = await openai.createCompletion("text-curie-001", {
     prompt: generatePrompt(req.body.user),
