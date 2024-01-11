@@ -10,32 +10,41 @@ require('dotenv').config()
 const path = require('path');
 app.use(express.static(path.join(__dirname + "/public")));
 
-const { Configuration, OpenAIApi } = require("openai");
+const { OpenAI } = require("openai");
 
-const configuration = new Configuration({
-  apiKey: process.env.REACT_APP_OPENAI_API_KEY
+// const configuration = new Configuration({
+//   apiKey: process.env.REACT_APP_OPENAI_API_KEY
+// });
+
+const apiKey = process.env.OPENAI_API_KEY;
+const openai = new OpenAI({
+  apiKey
 });
 
-const openai = new OpenAIApi(configuration);
-
 app.get('/', (req, res) => {
+  console.log('GET');
     res.send('Welcome to openai elevator pitch 😁')
 })
 
 app.post('/pitch', async (req, res) => {
   console.log('server app.post');
+  const content = req.body;
   res.set('Access-Control-Allow-Origin', '*');
-  const completion = await openai.createCompletion("text-curie-001", {
-    prompt: generatePrompt(req.body.user),
-    temperature: 0.7,
-    max_tokens: 64,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    presence_penalty: 0.31,
+  // const completion = await openai.createCompletion("text-curie-001", {
+  //   prompt: generatePrompt(req.body.user),
+  //   temperature: 0.7,
+  //   max_tokens: 64,
+  //   top_p: 1,
+  //   frequency_penalty: 0,
+  //   presence_penalty: 0,
+  //   presence_penalty: 0.31,
+  // });
+  const completion = await openai.chat.completions.create({
+    messages: [{ role: "system", content: "Create a short elevator pitch, using the following data: " + content }],
+    model: "gpt-3.5-turbo",
   });
-    console.log("first", req.body)
-    res.status(200).json({ result: completion.data.choices[0].text });
+  console.log(completion.choices[0]);
+  return res.status(200).json({ result: completion.choices[0].message.content });
 })
 
 function generatePrompt(p) {
@@ -62,5 +71,5 @@ function generatePrompt(p) {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log('listening...')
+    console.log('listening...' + PORT)
 })
